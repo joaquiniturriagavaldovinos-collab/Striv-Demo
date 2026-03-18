@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Striv — Nutrition</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <style>
+    .scan-line { position:absolute;width:76%;height:2px;background:var(--energy);opacity:0.85;left:12%;box-shadow:0 0 10px var(--energy-glow);animation:scan 2.2s ease-in-out infinite; }
+    @keyframes scan { 0%,100%{top:26px} 50%{top:calc(100% - 26px)} }
+    .friend-item { display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border-0);transition:background var(--transition); }
+    .friend-item:last-child { border-bottom:none; }
+    .friend-item:hover { background:var(--bg-3); }
+    .f-avatar-wrap { position:relative;flex-shrink:0; }
+    .f-avatar { width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:12px;font-weight:300;border:1px solid var(--border-1); }
+    .f-online { width:9px;height:9px;border-radius:50%;background:var(--life);border:2px solid var(--bg-0);position:absolute;bottom:0;right:0; }
+    .f-info { flex:1; }
+    .f-info strong { font-size:13px;font-weight:500;display:block; }
+    .f-info span   { font-size:11px;color:var(--t3); }
+    .f-stat strong { font-family:var(--font-display);font-size:15px;color:var(--energy);letter-spacing:0.5px;display:block;text-align:right; }
+    .f-stat span   { font-size:9px;color:var(--t3);text-align:right;display:block;text-transform:uppercase;letter-spacing:0.4px; }
+    .add-btn { padding:5px 12px;border-radius:100px;font-size:11px;font-weight:500;background:var(--energy-bg);color:var(--energy);border:1px solid var(--energy-glow);cursor:pointer;transition:all var(--transition);white-space:nowrap; }
+    .add-btn:hover { background:var(--energy);color:#080808; }
+    .add-btn.added { background:var(--life-bg);color:var(--life);border-color:rgba(61,214,140,0.2); }
+    .tab-row { display:flex;border-bottom:1px solid var(--border-0);padding:0 20px; }
+    .tab-btn { flex:1;padding:11px 0;font-size:12px;font-weight:500;color:var(--t3);border-bottom:2px solid transparent;transition:all var(--transition);text-align:center;background:none;border-top:none;border-left:none;border-right:none;letter-spacing:0.4px; }
+    .tab-btn.active { color:var(--energy);border-bottom-color:var(--energy); }
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block;animation:slideUp 0.25s ease; }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <span class="top-bar-logo">STRIV</span>
+    <div class="top-actions">
+      <button class="icon-btn" onclick="ThemeEngine.toggleTheme()"><span class="theme-toggle-icon">☀️</span></button>
+    </div>
+  </header>
+  <main class="page-content page-enter">
+
+    <!-- Calorie ring -->
+    <div class="card stagger-1" style="margin:16px 20px;display:flex;align-items:center;gap:20px;">
+      <div class="ring-wrap" style="width:88px;height:88px;">
+        <svg width="88" height="88" viewBox="0 0 88 88" class="ring-svg">
+          <circle class="ring-track" cx="44" cy="44" r="36" stroke-width="7" fill="none"/>
+          <circle cx="44" cy="44" r="36" stroke-width="7" fill="none"
+            stroke="var(--life)" stroke-linecap="round"
+            stroke-dasharray="226" stroke-dashoffset="108"
+            style="transform:rotate(-90deg);transform-origin:center;"/>
+        </svg>
+        <div class="ring-center">
+          <span class="rval" style="color:var(--life);">1.1K</span>
+          <span class="runit">kcal</span>
+        </div>
+      </div>
+      <div style="flex:1;">
+        <div style="font-family:var(--font-display);font-size:30px;letter-spacing:0.5px;line-height:1;" id="total-kcal">1,140<span style="font-size:14px;color:var(--t3);letter-spacing:0;"> kcal</span></div>
+        <p style="font-size:11px;color:var(--t2);margin-top:5px;">of 2,200 kcal goal</p>
+        <div class="track mt-8" style="height:4px;"><div class="fill fill-life" id="kcal-bar" style="width:52%;"></div></div>
+        <p style="font-size:10px;color:var(--t3);margin-top:4px;" id="kcal-remain">1,060 REMAINING</p>
+      </div>
+    </div>
+
+    <!-- Macro pills -->
+    <div class="macro-pills stagger-2">
+      <div class="macro-pill">
+        <div class="mp-val" style="color:var(--energy);" id="mp-p">77g</div>
+        <div class="mp-label">Protein</div>
+        <div class="mp-bar"><div class="mp-fill" style="background:var(--energy);width:64%;"></div></div>
+      </div>
+      <div class="macro-pill">
+        <div class="mp-val" style="color:var(--water);" id="mp-c">147g</div>
+        <div class="mp-label">Carbs</div>
+        <div class="mp-bar"><div class="mp-fill" style="background:var(--water);width:49%;"></div></div>
+      </div>
+      <div class="macro-pill">
+        <div class="mp-val" style="color:var(--iris);" id="mp-f">23g</div>
+        <div class="mp-label">Fat</div>
+        <div class="mp-bar"><div class="mp-fill" style="background:var(--iris);width:33%;"></div></div>
+      </div>
+      <div class="macro-pill">
+        <div class="mp-val" style="color:var(--life);" id="mp-fb">18g</div>
+        <div class="mp-label">Fiber</div>
+        <div class="mp-bar"><div class="mp-fill" style="background:var(--life);width:72%;"></div></div>
+      </div>
+    </div>
+
+    <div class="tab-row mt-20 stagger-3">
+      <button class="tab-btn active" onclick="switchTab('log',this)">Food Log</button>
+      <button class="tab-btn" onclick="switchTab('scan',this)">Scan</button>
+      <button class="tab-btn" onclick="switchTab('friends',this)">Friends</button>
+    </div>
+
+    <!-- Food Log -->
+    <div class="tab-panel active" id="tab-log">
+      <div style="padding:16px 20px 0;">
+        <div class="between mb-12">
+          <span class="eyebrow">Meals today</span>
+          <button class="btn btn-ghost" style="padding:6px 14px;font-size:11px;" onclick="toggleAddFood()">+ Add food</button>
+        </div>
+        <div id="add-food-panel" style="display:none;margin-bottom:14px;">
+          <div class="card-sm">
+            <p style="font-size:13px;font-weight:500;margin-bottom:10px;">Add food item</p>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <input type="text" id="food-name" placeholder="Food name" style="padding:10px 12px;width:100%;">
+              <div style="display:flex;gap:8px;">
+                <input type="number" id="food-kcal"    placeholder="kcal"      style="padding:10px 12px;flex:1;">
+                <input type="number" id="food-protein" placeholder="Protein g" style="padding:10px 12px;flex:1;">
+              </div>
+              <div style="display:flex;gap:8px;">
+                <input type="number" id="food-carbs"   placeholder="Carbs g"   style="padding:10px 12px;flex:1;">
+                <input type="number" id="food-fat"     placeholder="Fat g"     style="padding:10px 12px;flex:1;">
+              </div>
+              <div style="display:flex;gap:8px;margin-top:2px;">
+                <button class="btn btn-energy" style="flex:1;" onclick="addFood()">Add</button>
+                <button class="btn btn-ghost"  style="flex:1;" onclick="toggleAddFood()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="meal-sections"></div>
+        <div class="card-sm mt-16" style="border-left:2px solid var(--life);margin-bottom:20px;">
+          <p style="font-size:12px;font-weight:500;">💡 Insight</p>
+          <p style="font-size:12px;color:var(--t2);margin-top:5px;line-height:1.6;">Great protein intake today. Add complex carbs before your workout for optimal energy output.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scanner -->
+    <div class="tab-panel" id="tab-scan">
+      <div style="padding:16px 20px 0;">
+        <p style="font-size:13px;color:var(--t2);margin-bottom:14px;line-height:1.6;">Align a product barcode within the frame to automatically log nutritional info.</p>
+        <div class="scanner-box">
+          <div class="scanner-view">
+            <div class="barcode-bg" id="bc-bg"></div>
+            <div class="scan-corner sc-tl"></div>
+            <div class="scan-corner sc-tr"></div>
+            <div class="scan-corner sc-bl"></div>
+            <div class="scan-corner sc-br"></div>
+            <div class="scan-line"></div>
+            <div class="scan-hint">ALIGN BARCODE WITHIN FRAME</div>
+          </div>
+          <div class="scan-result" id="scan-result">
+            <div class="between mb-12">
+              <div>
+                <p style="font-size:14px;font-weight:500;" id="sc-name">—</p>
+                <p style="font-size:11px;color:var(--t3);" id="sc-brand">—</p>
+              </div>
+              <span class="badge b-life">Scanned ✓</span>
+            </div>
+            <div style="display:flex;gap:12px;margin-bottom:12px;">
+              <div style="text-align:center;flex:1;"><p class="num" style="font-size:18px;color:var(--life);" id="sc-kcal">—</p><p style="font-size:9px;color:var(--t3);text-transform:uppercase;margin-top:2px;">kcal</p></div>
+              <div style="text-align:center;flex:1;"><p class="num" style="font-size:18px;color:var(--energy);" id="sc-p">—</p><p style="font-size:9px;color:var(--t3);text-transform:uppercase;margin-top:2px;">protein</p></div>
+              <div style="text-align:center;flex:1;"><p class="num" style="font-size:18px;color:var(--water);" id="sc-c">—</p><p style="font-size:9px;color:var(--t3);text-transform:uppercase;margin-top:2px;">carbs</p></div>
+              <div style="text-align:center;flex:1;"><p class="num" style="font-size:18px;color:var(--iris);" id="sc-f">—</p><p style="font-size:9px;color:var(--t3);text-transform:uppercase;margin-top:2px;">fat</p></div>
+            </div>
+            <button class="btn btn-energy btn-full" onclick="addScannedFood()">Add to log</button>
+          </div>
+        </div>
+        <button class="btn btn-ghost btn-full mt-12" onclick="simulateScan()" style="margin-bottom:8px;">📷 Simulate scan (demo)</button>
+        <p style="font-size:10px;color:var(--t3);text-align:center;margin-bottom:20px;text-transform:uppercase;letter-spacing:0.5px;">Camera access required on real device</p>
+      </div>
+    </div>
+
+    <!-- Friends -->
+    <div class="tab-panel" id="tab-friends">
+      <div style="padding:16px 20px 0;">
+        <div class="search-wrap mb-16" style="margin-bottom:14px;">
+          <span class="search-icon">🔍</span>
+          <input type="text" placeholder="Search by name or username…" style="padding:11px 12px 11px 36px;width:100%;">
+        </div>
+        <p class="eyebrow mb-8" style="margin-bottom:8px;">Your friends · <span style="color:var(--energy);">6</span></p>
+        <div class="card-flush mb-16" style="margin-bottom:14px;" id="friends-list"></div>
+        <p class="eyebrow mb-8" style="margin-bottom:8px;">Suggestions</p>
+        <div class="card-flush" style="margin-bottom:20px;" id="suggestions-list"></div>
+      </div>
+    </div>
+
+  </main>
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+<div class="toast"></div>
+<script src="js/app.js"></script>
+<script>
+  renderNav('nutrition');
+
+  const MEAL_TYPES = ['Breakfast','Lunch','Dinner','Snacks'];
+  let meals = [
+    { name:'Oatmeal with banana', type:'Breakfast', time:'08:00', kcal:380, p:12, c:65, f:8,  icon:'🥣' },
+    { name:'Chicken & rice',      type:'Lunch',     time:'13:00', kcal:620, p:48, c:72, f:12, icon:'🍗' },
+    { name:'Greek yogurt',        type:'Snacks',    time:'16:00', kcal:140, p:17, c:10, f:3,  icon:'🫙' },
+  ];
+
+  const FRIENDS = [
+    { init:'AL', name:'Ana Lucía',  user:'@analu',  kcal:1840, online:true,  color:'rgba(245,197,24,0.10)' },
+    { init:'CR', name:'Carlos R.',  user:'@carlos', kcal:2200, online:true,  color:'rgba(59,166,240,0.10)' },
+    { init:'MB', name:'Marco B.',   user:'@marcob', kcal:980,  online:false, color:'rgba(61,214,140,0.10)' },
+    { init:'PV', name:'Paula V.',   user:'@paulav', kcal:1560, online:true,  color:'rgba(158,120,245,0.10)' },
+    { init:'DS', name:'Diego S.',   user:'@diegos', kcal:2100, online:false, color:'rgba(255,94,58,0.10)' },
+    { init:'KM', name:'Kira M.',    user:'@kiram',  kcal:1320, online:true,  color:'rgba(245,197,24,0.08)' },
+  ];
+  const SUGGESTIONS = [
+    { init:'RV', name:'Rodrigo V.', user:'@rodrigov', mutual:3, color:'rgba(59,166,240,0.10)' },
+    { init:'SL', name:'Sofia L.',   user:'@sofial',   mutual:2, color:'rgba(61,214,140,0.10)' },
+    { init:'JC', name:'Javier C.',  user:'@javierc',  mutual:1, color:'rgba(158,120,245,0.10)' },
+  ];
+  const SCAN_PRODUCTS = [
+    { name:'Granola Bar',    brand:'Nature Valley',     kcal:190, p:'4g', c:'29g', f:'7g' },
+    { name:'Protein Shake',  brand:'Optimum Nutrition', kcal:150, p:'24g',c:'5g',  f:'2g' },
+    { name:'Greek Yogurt',   brand:'Fage',              kcal:90,  p:'17g',c:'6g',  f:'0g' },
+    { name:'Chocolate Bar',  brand:'Nestlé',            kcal:240, p:'3g', c:'30g', f:'13g'},
+    { name:'Chicken Breast', brand:'Fresh Market',      kcal:165, p:'31g',c:'0g',  f:'4g' },
+  ];
+  let scannedProduct = null;
+
+  function switchTab(tab, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+  }
+
+  function renderMeals() {
+    const container = document.getElementById('meal-sections');
+    let total = { kcal:0, p:0, c:0, f:0 };
+    meals.forEach(m => { total.kcal+=m.kcal; total.p+=m.p; total.c+=m.c; total.f+=m.f; });
+    const grouped = {};
+    MEAL_TYPES.forEach(t => { grouped[t] = meals.filter(m => m.type===t); });
+    container.innerHTML = MEAL_TYPES.map(type => {
+      const items = grouped[type];
+      if (!items.length) return '';
+      const typeKcal = items.reduce((a,m)=>a+m.kcal,0);
+      return `
+        <div style="margin-bottom:14px;">
+          <div class="between mb-8"><span style="font-size:12px;font-weight:500;">${type}</span><span style="font-size:10px;color:var(--t3);letter-spacing:0.3px;">${typeKcal} KCAL</span></div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            ${items.map(m=>`
+              <div class="meal-card">
+                <div class="meal-icon">${m.icon}</div>
+                <div class="meal-info"><strong>${m.name}</strong><span>${m.time} · P:${m.p}g C:${m.c}g F:${m.f}g</span></div>
+                <div><div class="meal-kcal num">${m.kcal}</div><div style="font-size:9px;color:var(--t3);text-align:right;text-transform:uppercase;">kcal</div></div>
+              </div>`).join('')}
+          </div>
+        </div>`;
+    }).join('');
+    updateTotals(total);
+  }
+
+  function updateTotals(total) {
+    const goal=2200, pct=Math.min(Math.round(total.kcal/goal*100),100), rem=Math.max(goal-total.kcal,0);
+    document.getElementById('total-kcal').innerHTML = `${total.kcal.toLocaleString()}<span style="font-size:14px;color:var(--t3);letter-spacing:0;"> kcal</span>`;
+    document.getElementById('kcal-bar').style.width = `${pct}%`;
+    document.getElementById('kcal-remain').textContent = rem>0 ? `${rem.toLocaleString()} REMAINING` : 'GOAL REACHED 🎉';
+    document.getElementById('mp-p').textContent  = `${total.p}g`;
+    document.getElementById('mp-c').textContent  = `${total.c}g`;
+    document.getElementById('mp-f').textContent  = `${total.f}g`;
+  }
+
+  function toggleAddFood() {
+    const p = document.getElementById('add-food-panel');
+    p.style.display = p.style.display==='none' ? 'block' : 'none';
+  }
+  function addFood() {
+    const name=document.getElementById('food-name').value.trim();
+    const kcal=parseInt(document.getElementById('food-kcal').value)||0;
+    const p=parseInt(document.getElementById('food-protein').value)||0;
+    const c=parseInt(document.getElementById('food-carbs').value)||0;
+    const f=parseInt(document.getElementById('food-fat').value)||0;
+    if (!name||!kcal) { showToast('⚠️ Name and kcal required'); return; }
+    meals.push({ name, type:'Snacks', time:formatTime(), kcal, p, c, f, icon:'🍽️' });
+    toggleAddFood();
+    renderMeals();
+    showToast(`✅ ${name} logged`);
+    ['food-name','food-kcal','food-protein','food-carbs','food-fat'].forEach(id=>document.getElementById(id).value='');
+  }
+
+  function buildBarcode() {
+    const el=document.getElementById('bc-bg'); if (!el) return;
+    const heights=[60,40,80,50,70,35,90,45,65,55,80,40,75,50,60,35,85,45,70,60,50,80,40,65,55];
+    el.innerHTML=heights.map(h=>`<div class="bc-bar" style="height:${h}px;"></div>`).join('');
+  }
+
+  function simulateScan() {
+    const p=SCAN_PRODUCTS[Math.floor(Math.random()*SCAN_PRODUCTS.length)];
+    scannedProduct=p;
+    document.getElementById('sc-name').textContent=p.name;
+    document.getElementById('sc-brand').textContent=p.brand;
+    document.getElementById('sc-kcal').textContent=p.kcal;
+    document.getElementById('sc-p').textContent=p.p;
+    document.getElementById('sc-c').textContent=p.c;
+    document.getElementById('sc-f').textContent=p.f;
+    document.getElementById('scan-result').classList.add('show');
+    showToast(`📷 Scanned: ${p.name}`);
+  }
+  function addScannedFood() {
+    if (!scannedProduct) return;
+    const p=scannedProduct;
+    meals.push({ name:p.name, type:'Snacks', time:formatTime(), kcal:p.kcal, p:parseInt(p.p)||0, c:parseInt(p.c)||0, f:parseInt(p.f)||0, icon:'🏷️' });
+    document.getElementById('scan-result').classList.remove('show');
+    scannedProduct=null;
+    renderMeals();
+    showToast(`✅ ${p.name} added`);
+  }
+
+  function renderFriends() {
+    const fl=document.getElementById('friends-list');
+    const sl=document.getElementById('suggestions-list');
+    if (fl) fl.innerHTML=FRIENDS.map(f=>`
+      <div class="friend-item">
+        <div class="f-avatar-wrap">
+          <div class="f-avatar" style="background:${f.color};">${f.init}</div>
+          ${f.online?'<div class="f-online"></div>':''}
+        </div>
+        <div class="f-info"><strong>${f.name}</strong><span>${f.user} · ${f.online?'<span style="color:var(--life);">online</span>':'away'}</span></div>
+        <div class="f-stat"><strong>${f.kcal.toLocaleString()}</strong><span>kcal today</span></div>
+      </div>`).join('');
+    if (sl) sl.innerHTML=SUGGESTIONS.map(s=>`
+      <div class="friend-item">
+        <div class="f-avatar" style="background:${s.color};">${s.init}</div>
+        <div class="f-info"><strong>${s.name}</strong><span>${s.user} · ${s.mutual} mutual</span></div>
+        <button class="add-btn" onclick="addFriend(this,'${s.name}')">+ Add</button>
+      </div>`).join('');
+  }
+  function addFriend(btn,name) { btn.textContent='✓ Added'; btn.classList.add('added'); btn.disabled=true; showToast(`✅ Request sent to ${name}`); }
+
+  buildBarcode();
+  renderMeals();
+  renderFriends();
+</script>
+</body>
+</html>

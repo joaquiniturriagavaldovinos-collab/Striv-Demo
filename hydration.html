@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Striv — Hydration</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <span class="top-bar-logo">STRIV</span>
+    <div class="top-actions">
+      <button class="icon-btn" onclick="ThemeEngine.toggleTheme()"><span class="theme-toggle-icon">☀️</span></button>
+    </div>
+  </header>
+  <main class="page-content page-enter">
+
+    <div class="card water-hero stagger-1" style="margin:16px 20px;">
+      <div class="water-big num" id="water-display">1.4<span class="unit">L</span></div>
+      <p class="water-sub">of 2.5 L daily goal</p>
+      <div class="track mt-12" style="height:6px;position:relative;">
+        <div class="fill fill-water" id="water-bar" style="width:56%;"></div>
+      </div>
+      <div class="between mt-8">
+        <span class="water-pct" id="water-pct">56% complete</span>
+        <span style="font-size:10px;color:var(--t3);letter-spacing:0.3px;" id="water-rem">1,100 ML REMAINING</span>
+      </div>
+    </div>
+
+    <div class="between px mt-20 mb-8 stagger-2"><span class="eyebrow">Add by container</span></div>
+    <div class="containers stagger-2">
+      <button class="cont-btn" onclick="addWater(200,'Glass',this)">
+        <span class="cont-icon">🥛</span><span class="cont-val">200</span><span class="cont-label">Glass</span>
+      </button>
+      <button class="cont-btn" onclick="addWater(330,'Can',this)">
+        <span class="cont-icon">🥤</span><span class="cont-val">330</span><span class="cont-label">Can</span>
+      </button>
+      <button class="cont-btn" onclick="addWater(500,'Bottle',this)">
+        <span class="cont-icon">🍶</span><span class="cont-val">500</span><span class="cont-label">Bottle</span>
+      </button>
+      <button class="cont-btn" onclick="addWater(750,'Large',this)">
+        <span class="cont-icon">🧴</span><span class="cont-val">750</span><span class="cont-label">Large</span>
+      </button>
+      <button class="cont-btn" onclick="addWater(1000,'Thermos',this)">
+        <span class="cont-icon">🫙</span><span class="cont-val">1000</span><span class="cont-label">Thermos</span>
+      </button>
+      <button class="cont-btn" onclick="openCustom()">
+        <span class="cont-icon">✏️</span><span class="cont-val" style="font-size:13px;">...</span><span class="cont-label">Custom</span>
+      </button>
+    </div>
+
+    <div id="custom-section" style="display:none;padding:12px 20px 0;" class="stagger-2">
+      <div style="display:flex;gap:8px;">
+        <input type="number" id="custom-ml" placeholder="Amount in ml" style="flex:1;padding:10px 12px;">
+        <button class="btn btn-ghost" onclick="addCustomWater()">Add</button>
+        <button class="btn btn-ghost" onclick="closeCustom()" style="padding:10px 12px;">✕</button>
+      </div>
+    </div>
+
+    <div class="between px mt-16 mb-8 stagger-3"><span class="eyebrow">Quick add</span></div>
+    <div class="scroll-x px quick-chips stagger-3">
+      <button class="qchip" onclick="addWater(100,'Sip')">+100</button>
+      <button class="qchip" onclick="addWater(150,'Sip')">+150</button>
+      <button class="qchip" onclick="addWater(250,'Glass')">+250</button>
+      <button class="qchip" onclick="addWater(400,'Large glass')">+400</button>
+    </div>
+
+    <!-- Weekly mini chart -->
+    <div class="card-sm mt-16 stagger-4" style="margin:16px 20px 0;">
+      <div class="between mb-12">
+        <div><p style="font-size:13px;font-weight:500;">Weekly average</p><p style="font-size:11px;color:var(--t3);margin-top:1px;">Last 7 days</p></div>
+        <div style="text-align:right;">
+          <span class="num" style="font-size:22px;color:var(--water);">1.9<span style="font-size:12px;color:var(--t3);">L</span></span>
+        </div>
+      </div>
+      <div class="weekly-mini">
+        <div class="wbar" style="height:60%;"></div>
+        <div class="wbar" style="height:80%;"></div>
+        <div class="wbar" style="height:55%;"></div>
+        <div class="wbar" style="height:100%;"></div>
+        <div class="wbar" style="height:70%;"></div>
+        <div class="wbar" style="height:88%;"></div>
+        <div class="wbar today" style="height:56%;"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:5px;">
+        <span style="font-size:9px;color:var(--t3);">MON</span>
+        <span style="font-size:9px;color:var(--t3);">TUE</span>
+        <span style="font-size:9px;color:var(--t3);">WED</span>
+        <span style="font-size:9px;color:var(--t3);">THU</span>
+        <span style="font-size:9px;color:var(--t3);">FRI</span>
+        <span style="font-size:9px;color:var(--t3);">SAT</span>
+        <span style="font-size:9px;color:var(--water);">TODAY</span>
+      </div>
+    </div>
+
+    <div class="between px mt-20 mb-8 stagger-4">
+      <span class="eyebrow">Today's log</span>
+      <span id="log-count" style="font-size:11px;color:var(--t3);">4 entries</span>
+    </div>
+    <div class="card-flush stagger-5" style="margin:0 20px 20px;">
+      <div id="water-log"></div>
+    </div>
+
+  </main>
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+<div class="toast"></div>
+<script src="js/app.js"></script>
+<script src="js/hydration.js"></script>
+<script>
+  renderNav('hydration');
+  initHydration();
+</script>
+</body>
+</html>

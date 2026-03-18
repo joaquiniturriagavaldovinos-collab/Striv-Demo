@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Striv — Workout</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <span class="top-bar-logo">STRIV</span>
+    <div class="top-actions">
+      <button class="icon-btn" onclick="ThemeEngine.toggleTheme()"><span class="theme-toggle-icon">☀️</span></button>
+    </div>
+  </header>
+  <main class="page-content page-enter">
+
+    <div class="px mt-16 between stagger-1">
+      <div>
+        <p class="eyebrow mb-4">Your level</p>
+        <div class="level-pill">⚡ LVL 12 · WARRIOR</div>
+      </div>
+      <div style="text-align:right;">
+        <p class="eyebrow mb-4">Weekly rank</p>
+        <div class="rank-big">#4</div>
+      </div>
+    </div>
+
+    <div class="px mt-12 stagger-1">
+      <div class="xp-row"><span class="xp-label">Experience</span><span class="xp-val">2,340 / 3,000 XP</span></div>
+      <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%;"></div></div>
+    </div>
+
+    <div class="stat-chips mt-16 stagger-2">
+      <div class="s-chip"><div class="s-chip-val" id="stat-done">0</div><div class="s-chip-label">Done today</div></div>
+      <div class="s-chip"><div class="s-chip-val" id="stat-kcal">0</div><div class="s-chip-label">kcal est.</div></div>
+      <div class="s-chip"><div class="s-chip-val" id="timer" style="font-size:16px;letter-spacing:0;">00:00</div><div class="s-chip-label">Session</div></div>
+    </div>
+
+    <div class="px mt-16 stagger-2">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search exercises, muscles, routines…"
+          style="padding:11px 12px 11px 36px;width:100%;" oninput="handleSearch(this.value)">
+      </div>
+    </div>
+    <div id="search-results" style="display:none;margin:10px 20px 0;">
+      <div class="card-flush" id="search-list"></div>
+    </div>
+
+    <div class="tab-row mt-16 stagger-3">
+      <button class="tab-btn active" onclick="switchTab('routines',this)">Routines</button>
+      <button class="tab-btn" onclick="switchTab('exercises',this)">Library</button>
+      <button class="tab-btn" onclick="switchTab('ranking',this)">Ranking</button>
+    </div>
+
+    <!-- Routines -->
+    <div class="tab-panel active px mt-16" id="tab-routines">
+      <div class="scroll-x gap-6 mb-12">
+        <button class="mchip chest" data-f="all"    onclick="setFilter('all',this)">All</button>
+        <button class="mchip"       data-f="upper"  onclick="setFilter('upper',this)">Upper</button>
+        <button class="mchip"       data-f="lower"  onclick="setFilter('lower',this)">Lower</button>
+        <button class="mchip"       data-f="full"   onclick="setFilter('full',this)">Full body</button>
+        <button class="mchip"       data-f="cardio" onclick="setFilter('cardio',this)">Cardio</button>
+      </div>
+      <div id="routine-list"></div>
+    </div>
+
+    <!-- Library -->
+    <div class="tab-panel" id="tab-exercises">
+      <div style="padding:16px 20px 0;">
+        <div class="scroll-x gap-6 mb-12">
+          <button class="mchip chest"     onclick="filterLib('all',this)">All</button>
+          <button class="mchip chest"     onclick="filterLib('chest',this)">Chest</button>
+          <button class="mchip back"      onclick="filterLib('back',this)">Back</button>
+          <button class="mchip legs"      onclick="filterLib('legs',this)">Legs</button>
+          <button class="mchip shoulders" onclick="filterLib('shoulders',this)">Shoulders</button>
+          <button class="mchip arms"      onclick="filterLib('arms',this)">Arms</button>
+        </div>
+        <div class="card-flush" id="exercise-library"></div>
+      </div>
+    </div>
+
+    <!-- Ranking -->
+    <div class="tab-panel" id="tab-ranking">
+      <div style="padding:16px 20px 0;">
+        <div class="scroll-x gap-6 mb-16">
+          <button class="mchip chest" onclick="switchRank('weekly',this)">This week</button>
+          <button class="mchip"       onclick="switchRank('monthly',this)">This month</button>
+          <button class="mchip"       onclick="switchRank('alltime',this)">All time</button>
+        </div>
+        <!-- Podium -->
+        <div style="display:flex;align-items:flex-end;justify-content:center;gap:10px;margin-bottom:20px;">
+          <div style="flex:1;text-align:center;">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(176,176,176,0.1);border:1.5px solid #B0B0B0;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:12px;font-weight:300;margin:0 auto 6px;">CR</div>
+            <p style="font-size:11px;font-weight:500;">Carlos R.</p>
+            <p style="font-size:10px;color:var(--t3);">2,180 XP</p>
+            <div style="background:rgba(176,176,176,0.08);border-radius:6px 6px 0 0;height:50px;margin-top:8px;display:flex;align-items:center;justify-content:center;font-size:18px;">🥈</div>
+          </div>
+          <div style="flex:1;text-align:center;">
+            <div style="width:48px;height:48px;border-radius:50%;background:var(--energy-bg);border:2px solid var(--energy-glow);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:13px;font-weight:300;color:var(--energy);margin:0 auto 6px;">AL</div>
+            <p style="font-size:12px;font-weight:500;">Ana L.</p>
+            <p style="font-size:10px;color:var(--energy);">3,450 XP</p>
+            <div style="background:var(--energy-bg);border-radius:6px 6px 0 0;height:70px;margin-top:8px;display:flex;align-items:center;justify-content:center;font-size:22px;">🥇</div>
+          </div>
+          <div style="flex:1;text-align:center;">
+            <div style="width:42px;height:42px;border-radius:50%;background:rgba(205,127,50,0.1);border:1.5px solid #CD7F32;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-size:12px;font-weight:300;margin:0 auto 6px;">MB</div>
+            <p style="font-size:11px;font-weight:500;">Marco B.</p>
+            <p style="font-size:10px;color:var(--t3);">1,970 XP</p>
+            <div style="background:rgba(205,127,50,0.08);border-radius:6px 6px 0 0;height:38px;margin-top:8px;display:flex;align-items:center;justify-content:center;font-size:15px;">🥉</div>
+          </div>
+        </div>
+        <div class="card-flush" id="rank-list"></div>
+      </div>
+    </div>
+
+    <div style="height:20px;"></div>
+  </main>
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+<div class="toast"></div>
+<script src="js/app.js"></script>
+<script src="js/workout.js"></script>
+<script>
+  renderNav('workout');
+  initWorkout();
+  setTimeout(() => { document.getElementById('xp-fill').style.width='78%'; }, 300);
+</script>
+</body>
+</html>

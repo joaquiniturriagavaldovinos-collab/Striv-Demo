@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Striv — Sign Up</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<div class="app-shell auth-wrap">
+  <button onclick="ThemeEngine.toggleTheme()"
+    style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;z-index:10;">
+    <span class="theme-toggle-icon">☀️</span>
+  </button>
+  <div class="auth-hero" style="padding-top:42px;">
+    <div class="auth-logo">STRIV</div>
+    <p class="auth-sub">Your journey starts here.</p>
+  </div>
+  <div class="auth-form">
+    <div><label class="form-label">Full name</label>
+      <input class="full" type="text" id="name" style="padding:12px 14px;" placeholder="Joaquin Iturriaga"></div>
+    <div><label class="form-label">Email</label>
+      <input class="full" type="email" id="email" style="padding:12px 14px;" placeholder="you@example.com"></div>
+    <div><label class="form-label">Password</label>
+      <input class="full" type="password" id="pass" style="padding:12px 14px;" placeholder="Min. 8 characters"></div>
+    <div><label class="form-label">Daily step goal</label>
+      <input class="full" type="number" id="goal" style="padding:12px 14px;" value="10000"></div>
+    <button class="btn btn-energy btn-full mt-8" id="reg-btn" onclick="doRegister()" style="padding:13px;">Create account</button>
+    <p class="auth-switch">Already have one? <a href="index.html">Sign in</a></p>
+  </div>
+</div>
+<div class="toast"></div>
+<script src="js/app.js"></script>
+<script>
+  function doRegister() {
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const pass  = document.getElementById('pass').value;
+    if (!name || !email || !pass) { showToast('Fill in all fields'); return; }
+    if (pass.length < 8) { showToast('Password too short'); return; }
+    const btn = document.getElementById('reg-btn');
+    btn.textContent = 'Creating…'; btn.disabled = true;
+    setTimeout(() => window.location.href = 'dashboard.html', 900);
+  }
+</script>
+</body>
+</html>

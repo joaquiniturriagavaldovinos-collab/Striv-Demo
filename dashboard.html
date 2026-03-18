@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Striv — Home</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <span class="top-bar-logo">STRIV</span>
+    <div class="top-actions">
+      <button class="icon-btn" onclick="ThemeEngine.toggleTheme()"><span class="theme-toggle-icon">☀️</span></button>
+      <div class="icon-btn" style="font-family:var(--font-display);font-size:14px;letter-spacing:1px;color:var(--energy);">JI</div>
+    </div>
+  </header>
+
+  <main class="page-content page-enter">
+    <div class="dash-greeting stagger-1">
+      <h1>Good morning,<br><em>Joaquin</em></h1>
+      <p class="dash-date" id="dash-date"></p>
+    </div>
+
+    <div class="steps-hero stagger-2 card-glow">
+      <div class="ring-wrap" style="width:88px;height:88px;">
+        <svg width="88" height="88" viewBox="0 0 88 88" class="ring-svg">
+          <circle class="ring-track" cx="44" cy="44" r="36" stroke-width="7" fill="none"/>
+          <circle class="ring-fill" cx="44" cy="44" r="36" stroke-width="7" fill="none"
+            stroke="var(--energy)" stroke-dasharray="226" stroke-dashoffset="226" id="ring-fill"/>
+        </svg>
+        <div class="ring-center">
+          <span class="rval">7.2K</span>
+          <span class="runit">steps</span>
+        </div>
+      </div>
+      <div class="steps-data">
+        <div class="big">7,248</div>
+        <div class="sub mt-4">of 10,000 step goal</div>
+        <div class="track mt-8" style="height:4px;"><div class="fill fill-energy" style="width:72%;"></div></div>
+        <div style="font-size:10px;color:var(--t3);margin-top:5px;letter-spacing:0.3px;">72% COMPLETE · 2,752 remaining</div>
+      </div>
+    </div>
+
+    <div class="metrics-grid stagger-3">
+      <div class="m-tile"><div class="m-icon">🔥</div><div class="m-val">384</div><div class="m-label">kcal burn</div></div>
+      <div class="m-tile"><div class="m-icon">💧</div><div class="m-val">1.4<span style="font-size:11px;color:var(--t3);">L</span></div><div class="m-label">hydration</div></div>
+      <div class="m-tile"><div class="m-icon">💪</div><div class="m-val">2<span style="font-size:11px;color:var(--t3);">/4</span></div><div class="m-label">exercises</div></div>
+    </div>
+    <div class="metrics-grid mt-8 stagger-3">
+      <div class="m-tile"><div class="m-icon">🥗</div><div class="m-val">1,140</div><div class="m-label">kcal eaten</div></div>
+      <div class="m-tile"><div class="m-icon">⚡</div><div class="m-val" style="color:var(--energy);">5</div><div class="m-label">streak</div></div>
+      <div class="m-tile"><div class="m-icon">😴</div><div class="m-val">7.4<span style="font-size:11px;color:var(--t3);">h</span></div><div class="m-label">sleep</div></div>
+    </div>
+
+    <div class="card-sm overview-card stagger-4">
+      <div class="between mb-12"><span style="font-size:12px;font-weight:500;">Daily overview</span><span class="badge b-energy">On track</span></div>
+      <div class="ov-row"><div class="ov-labels"><span class="ov-label">Steps</span><span class="ov-pct">72%</span></div><div class="track" style="height:3px;"><div class="fill fill-energy" style="width:72%;"></div></div></div>
+      <div class="ov-row"><div class="ov-labels"><span class="ov-label">Hydration</span><span class="ov-pct">56%</span></div><div class="track" style="height:3px;"><div class="fill fill-water" style="width:56%;"></div></div></div>
+      <div class="ov-row"><div class="ov-labels"><span class="ov-label">Nutrition</span><span class="ov-pct">52%</span></div><div class="track" style="height:3px;"><div class="fill fill-life" style="width:52%;"></div></div></div>
+    </div>
+
+    <div class="between px mt-20 mb-8 stagger-4"><span class="eyebrow">Recent activity</span></div>
+    <div class="feed stagger-5">
+      <div class="feed-row">
+        <div class="feed-ic" style="background:var(--energy-bg);">🏃</div>
+        <div class="feed-body"><strong>Morning walk</strong><span>2 hours ago · 3.2 km</span></div>
+        <span class="badge b-energy">+120 kcal</span>
+      </div>
+      <div class="feed-row">
+        <div class="feed-ic" style="background:var(--water-bg);">💧</div>
+        <div class="feed-body"><strong>Hydration logged</strong><span>45 min ago · 400 ml</span></div>
+        <span class="badge b-water">+400 ml</span>
+      </div>
+      <div class="feed-row">
+        <div class="feed-ic" style="background:var(--life-bg);">🥗</div>
+        <div class="feed-body"><strong>Meal tracked</strong><span>1 hour ago · Chicken & rice</span></div>
+        <span class="badge b-life">620 kcal</span>
+      </div>
+      <div class="feed-row">
+        <div class="feed-ic" style="background:var(--iris-bg);">💪</div>
+        <div class="feed-body"><strong>Workout session</strong><span>Yesterday · Upper Body A</span></div>
+        <span class="badge b-iris">Done</span>
+      </div>
+    </div>
+    <div style="height:16px;"></div>
+  </main>
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+<div class="toast"></div>
+<script src="js/app.js"></script>
+<script>
+  renderNav('dashboard');
+  document.getElementById('dash-date').textContent = formatDate();
+  window.addEventListener('load', () => setTimeout(() => { document.getElementById('ring-fill').style.strokeDashoffset = 226*(1-0.72); }, 250));
+</script>
+</body>
+</html>

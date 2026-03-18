@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Striv — Settings</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="top-bar">
+    <span class="top-bar-logo">STRIV</span>
+    <div class="top-actions">
+      <button class="icon-btn" onclick="ThemeEngine.toggleTheme()"><span class="theme-toggle-icon">☀️</span></button>
+    </div>
+  </header>
+  <main class="page-content page-enter">
+
+    <!-- Profile -->
+    <div class="profile-strip stagger-1">
+      <div class="p-avatar">JI</div>
+      <div style="flex:1;">
+        <div class="p-name">Joaquin Iturriaga</div>
+        <div class="p-mail">joaquin@striv.app</div>
+      </div>
+      <span class="badge b-energy">Free</span>
+    </div>
+
+    <!-- Quick stats -->
+    <div class="metrics-grid px stagger-2" style="padding:0 20px;">
+      <div class="m-tile"><div class="m-icon">🔥</div><div class="m-val">5</div><div class="m-label">streak</div></div>
+      <div class="m-tile"><div class="m-icon">💧</div><div class="m-val">12</div><div class="m-label">days logged</div></div>
+      <div class="m-tile"><div class="m-icon">💪</div><div class="m-val">8</div><div class="m-label">workouts</div></div>
+    </div>
+
+    <!-- Appearance -->
+    <div class="settings-group mt-24 stagger-3">
+      <p class="eyebrow mb-8" style="margin-bottom:8px;">Appearance</p>
+      <div class="card-flush">
+
+        <div class="s-row">
+          <div class="s-label"><div class="s-icon">🎨</div>Theme</div>
+          <div class="theme-pills">
+            <button class="t-pill" data-theme-pill="dark"    onclick="ThemeEngine.applyTheme('dark')">Dark</button>
+            <button class="t-pill" data-theme-pill="mineral" onclick="ThemeEngine.applyTheme('mineral')">Mineral</button>
+            <button class="t-pill" data-theme-pill="light"   onclick="ThemeEngine.applyTheme('light')">Light</button>
+          </div>
+        </div>
+
+        <div class="div" style="margin:0 16px;"></div>
+
+        <div class="s-row" style="flex-direction:column;align-items:flex-start;gap:12px;">
+          <div class="s-label"><div class="s-icon">🖌️</div>Accent color</div>
+          <div class="swatches" style="padding-left:38px;">
+            <button class="swatch" data-color="yellow" style="background:#F5C518;" onclick="ThemeEngine.applyColor('yellow');showToast('🎨 Gold')"></button>
+            <button class="swatch" data-color="green"  style="background:#3DD68C;" onclick="ThemeEngine.applyColor('green');showToast('🎨 Forest')"></button>
+            <button class="swatch" data-color="blue"   style="background:#3BA6F0;" onclick="ThemeEngine.applyColor('blue');showToast('🎨 Sky')"></button>
+            <button class="swatch" data-color="orange" style="background:#FF5E3A;" onclick="ThemeEngine.applyColor('orange');showToast('🎨 Ember')"></button>
+            <button class="swatch" data-color="purple" style="background:#9E78F5;" onclick="ThemeEngine.applyColor('purple');showToast('🎨 Iris')"></button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Goals -->
+    <div class="settings-group stagger-4">
+      <p class="eyebrow mb-8" style="margin-bottom:8px;">Daily goals</p>
+      <div class="card-flush">
+        <div class="s-row">
+          <div class="s-label"><div class="s-icon">🚶</div>Steps</div>
+          <input class="goal-input" type="number" value="10000" onchange="showToast('✅ Steps goal saved')">
+        </div>
+        <div class="div" style="margin:0 16px;"></div>
+        <div class="s-row">
+          <div class="s-label"><div class="s-icon">💧</div>Water (ml)</div>
+          <input class="goal-input" type="number" value="2500" onchange="showToast('✅ Water goal saved')">
+        </div>
+        <div class="div" style="margin:0 16px;"></div>
+        <div class="s-row">
+          <div class="s-label"><div class="s-icon">🔥</div>Calories</div>
+          <input class="goal-input" type="number" value="2200" onchange="showToast('✅ Calorie goal saved')">
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="settings-group stagger-4">
+      <p class="eyebrow mb-8" style="margin-bottom:8px;">Notifications</p>
+      <div class="card-flush">
+        <div class="s-row">
+          <div class="s-label"><div class="s-icon">💧</div>Hydration reminders</div>
+          <div class="toggle on" onclick="this.classList.toggle('on');showToast(this.classList.contains('on')?'🔔 On':'🔕 Off')"></div>
+        </div>
+        <div class="div" style="margin:0 16px;"></div>
+        <div class="s-row">
+          <div class="s-label"><div class="s-icon">💪</div>Workout reminders</div>
+          <div class="toggle on" onclick="this.classList.toggle('on');showToast(this.classList.contains('on')?'🔔 On':'🔕 Off')"></div>
+        </div>
+        <div class="div" style="margin:0 16px;"></div>
+        <div class="s-row">
+          <div class="s-label"><div class="s-icon">🎯</div>Goal achievements</div>
+          <div class="toggle on" onclick="this.classList.toggle('on');showToast(this.classList.contains('on')?'🔔 On':'🔕 Off')"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About -->
+    <div class="settings-group stagger-5">
+      <p class="eyebrow mb-8" style="margin-bottom:8px;">About</p>
+      <div class="card-flush">
+        <div class="s-row"><div class="s-label"><div class="s-icon">📱</div>Version</div><span class="s-value">Demo v0.3</span></div>
+        <div class="div" style="margin:0 16px;"></div>
+        <div class="s-row"><div class="s-label"><div class="s-icon">👨‍💻</div>Developer</div><span class="s-value">Joaquin Iturriaga</span></div>
+        <div class="div" style="margin:0 16px;"></div>
+        <div class="s-row"><div class="s-label"><div class="s-icon">🎓</div>DuocUC</div><span class="s-value">Informática 2025</span></div>
+      </div>
+    </div>
+
+    <div class="px mb-8">
+      <button class="btn btn-ghost btn-full" onclick="doLogout()" style="color:var(--burn);border-color:var(--burn-bg);padding:13px;">Sign out</button>
+    </div>
+
+  </main>
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+<div class="toast"></div>
+<script src="js/app.js"></script>
+<script>
+  renderNav('settings');
+  function doLogout() { showToast('👋 Signed out'); setTimeout(()=>window.location.href='index.html',1000); }
+</script>
+</body>
+</html>
